@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suggestions using AJAX</title>
+    <script>
+        function showHint(str)
+        {
+            //if nothing is typed in input field, clear the suggestions
+            if(str=="")
+            {
+                document.getElementById('hints').innerHTML = "";
+                return;   
+            }
+            else
+            {
+                //created xhr object
+                let xmlhttp = new XMLHttpRequest();
+                //opened url for http request with variable q equal to input string
+                xmlhttp.open('GET', 'gethint.php?q='+str, true);
+                //if ready state changes to 4 and http status is 200 add suggestions
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState==4 && this.status==200){
+                        document.getElementById('hints').innerHTML = this.responseText;
+                    }
+                }
+                //sending xhr request
+                xmlhttp.send();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Start typing name in the input field below:</h2>
+    Enter name: <input type="text" name="query" onkeyup="showHint(this.value)">
+    <p>Suggestions: <span id="hints"></span></p>
+</body>
+</html>
